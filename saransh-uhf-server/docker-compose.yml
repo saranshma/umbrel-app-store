@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+
+  app_proxy:
+    environment:
+      APP_HOST: saransh-uhf-server_server_1
+      APP_PORT: 8000
+
+  server:
+    image: swapplications/uhf-server:2.0.0@sha256:dcb832f910be8d85b67a25adb7cf12defb9e8e5ea1117e2c1a03fd5db4a82027
+    init: true
+    restart: on-failure
+    stop_grace_period: 1m
+    # The image ships no ENTRYPOINT and CMD ["bash"], so the binary is invoked here.
+    # Append --enable-commercial-detection to scan recordings for ad breaks (CPU heavy,
+    # runs for several minutes after each recording finishes).
+    command: uhf-server --port 8000 --recordings-dir /recordings
+    volumes:
+      # SQLite/state on the internal NVMe (ext4) — exFAT is not safe for a database.
+      - ${APP_DATA_DIR}/data/db:/var/lib/uhf-server
+      # Recordings on the 932G USB drive. create_host_path: false makes the container
+      # fail to start if the drive is unmounted, instead of silently filling the NVMe.
+      - type: bind
+        source: /home/umbrel/umbrel/external/saransh/uhf-recordings
+        target: /recordings
+        read_only: false
+        bind:
+          create_host_path: false

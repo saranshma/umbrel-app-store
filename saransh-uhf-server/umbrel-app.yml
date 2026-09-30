@@ -1,0 +1,35 @@
+manifestVersion: 1
+id: saransh-uhf-server
+storage:
+  dataRoot: data
+category: media
+name: UHF Server
+version: "2.0.0"
+tagline: DVR backend for the UHF IPTV player
+port: 8000
+description: >-
+  UHF Server is the backbone driving the DVR functionality of UHF — Love Your IPTV,
+  the IPTV player for iPhone, iPad, Apple TV and Mac.
+
+
+  It records live HLS and DASH streams on a schedule, supports recurring recordings,
+  and optionally detects commercial breaks in finished recordings.
+
+
+  Recordings are written to the USB drive at
+  /home/umbrel/umbrel/external/saransh/uhf-recordings. Point the UHF app at
+  http://umbrel.local:8000 to use this server.
+releaseNotes: >-
+  Initial packaging of UHF Server 2.0.0 for umbrelOS.
+developer: Short Wavelength Applications Ltd
+website: https://getuhf.com
+repo: https://github.com/swapplications/uhf-server-dist
+support: https://github.com/swapplications/uhf-server-dist/issues
+submitter: Saransh Mathur
+submission: https://github.com/swapplications/uhf-server-dist
+icon: https://raw.githubusercontent.com/saranshma/umbrel-app-store/main/saransh-uhf-server/icon.png
+gallery: []
+dependencies: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
