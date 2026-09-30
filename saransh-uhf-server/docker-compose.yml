@@ -2,16 +2,21 @@ version: "3.7"
 
 services:
 
-  app_proxy:
-    environment:
-      APP_HOST: saransh-uhf-server_server_1
-      APP_PORT: 8000
-
+  # No app_proxy here on purpose. app_proxy puts every request through umbrelOS's
+  # own login gate (redirects to /app-auth), which is right for a browser dashboard
+  # but breaks a raw API backend: the UHF app on Apple TV/iOS talks to this server
+  # directly and chokes on the HTML login redirect it gets back instead of JSON.
+  # network_mode: host (same pattern as the Home Assistant app, which has the same
+  # "native app needs direct API access" requirement) binds straight to the host,
+  # bypassing that gate, and also fixes UHF's mDNS/Bonjour broadcast: on the default
+  # per-app bridge network it was advertising the container's internal Docker IP,
+  # which isn't reachable from other devices on the real LAN.
   server:
     image: swapplications/uhf-server:2.0.0@sha256:dcb832f910be8d85b67a25adb7cf12defb9e8e5ea1117e2c1a03fd5db4a82027
     init: true
     restart: on-failure
     stop_grace_period: 1m
+    network_mode: host
     # The image ships no ENTRYPOINT and CMD ["bash"], so the binary is invoked here.
     # Append --enable-commercial-detection to scan recordings for ad breaks (CPU heavy,
     # runs for several minutes after each recording finishes).
