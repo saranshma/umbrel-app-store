@@ -1,0 +1,24 @@
+version: "3.7"
+
+services:
+
+  app_proxy:
+    environment:
+      APP_HOST: saransh-immich-backup_server_1
+      APP_PORT: 8990
+
+  server:
+    image: ghcr.io/saranshma/immich-backup:latest@sha256:429ad3a58aeceef01f6fb8b437090ef35d152add4e9437a87910822aa84b155d
+    init: true
+    restart: unless-stopped
+    # Needed so the container can mount the backup SSD (/dev/sda1, ext4, by UUID)
+    # from inside itself at startup. This box's root filesystem is an OverlayFS
+    # reset on every boot, so a host-level /etc/fstab entry does not survive —
+    # the container re-mounts it itself every time it starts instead. Same
+    # pattern the official Home Assistant app uses for its own /dev access.
+    privileged: true
+    volumes:
+      - /dev:/dev
+      # Read-only: this container only ever reads from Immich's upload dir and
+      # rsyncs it out to the SSD; it must never be able to write back into it.
+      - /home/umbrel/umbrel/app-data/immich/data/upload:/source:ro

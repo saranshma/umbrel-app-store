@@ -1,0 +1,30 @@
+manifestVersion: 1
+id: saransh-immich-backup
+category: files
+name: Immich Backup
+version: "1.0.0"
+tagline: Nightly rsync backup of the Immich photo library to a second drive
+port: 8990
+description: >-
+  Rsyncs Immich's upload directory to a second internal drive every night at
+  03:30, and serves a small status page showing the last backup's result,
+  duration, and how much data was transferred.
+
+
+  This is a personal backup utility, not a published project — the image is
+  built from a Dockerfile in this same app store repository.
+releaseNotes: >-
+  Initial packaging as a persistent Umbrel app, so it survives reboots and OS
+  updates instead of being silently wiped as an unregistered container.
+developer: Saransh Mathur
+website: https://github.com/saranshma/umbrel-app-store
+repo: https://github.com/saranshma/umbrel-app-store
+support: https://github.com/saranshma/umbrel-app-store/issues
+submitter: Saransh Mathur
+submission: https://github.com/saranshma/umbrel-app-store
+icon: https://raw.githubusercontent.com/saranshma/umbrel-app-store/main/saransh-immich-backup/icon.svg
+gallery: []
+dependencies: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
