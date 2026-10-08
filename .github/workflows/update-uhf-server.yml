@@ -1,0 +1,29 @@
+name: Check for UHF Server updates
+
+on:
+  schedule:
+    # Daily at 06:00 UTC
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  check-and-bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check Docker Hub and bump the pinned version if a newer release exists
+        id: bump
+        run: python3 .github/scripts/bump_uhf_server.py
+
+      - name: Commit and push the bump
+        if: steps.bump.outputs.version != ''
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add saransh-uhf-server/docker-compose.yml saransh-uhf-server/umbrel-app.yml
+          git commit -m "UHF Server: automated bump to ${{ steps.bump.outputs.version }}"
+          git push
