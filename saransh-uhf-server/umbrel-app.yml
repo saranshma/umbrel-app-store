@@ -4,7 +4,7 @@ storage:
   dataRoot: data
 category: media
 name: UHF Server
-version: "2.2.0"
+version: "2.2.1"
 tagline: DVR backend for the UHF IPTV player
 port: 8000
 description: >-
@@ -20,6 +20,7 @@ description: >-
   /home/umbrel/umbrel/external/saransh/uhf-recordings. Point the UHF app at
   http://umbrel.local:8000 to use this server.
 releaseNotes: >-
+  2.2.1: automatic update to the latest upstream release.
   2.2.0: automatic update to the latest upstream release.
   2.1.0: upstream release, adds a built-in web dashboard at the server's own
   address/port alongside the existing API.

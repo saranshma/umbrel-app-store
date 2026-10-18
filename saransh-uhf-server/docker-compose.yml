@@ -12,7 +12,7 @@ services:
   # per-app bridge network it was advertising the container's internal Docker IP,
   # which isn't reachable from other devices on the real LAN.
   server:
-    image: swapplications/uhf-server:2.2.0@sha256:fa33048b0aa7b11049def24c33d65506602aa9d47784c91fbda64566cc07fa80
+    image: swapplications/uhf-server:2.2.1@sha256:90ea32c62e56f21cb605694501b8a63b6b786f06516633770d771cf325138aab
     init: true
     restart: on-failure
     stop_grace_period: 1m
