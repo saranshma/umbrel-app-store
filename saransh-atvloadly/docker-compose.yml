@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  # No app_proxy: atvloadly needs host networking so it can see the Apple TV via
+  # mDNS/Bonjour (_remotepairing-manual-pairing._tcp), and it talks to the host's
+  # avahi-daemon + dbus sockets (both present and running on umbrelOS).
+  # Web UI is served directly on port 5533.
+  server:
+    image: bitxeno/atvloadly:v0.7.4@sha256:df881edf0ed3d02eb8114c3447367622ced056151931e323dc1e183549d02c40
+    init: true
+    restart: unless-stopped
+    network_mode: host
+    # Upstream recommends seccomp:unconfined; switch to `privileged: true` instead
+    # if the Apple TV is not discovered.
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      SERVICE_PORT: "5533"
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+      - /var/run/dbus:/var/run/dbus
+      - /var/run/avahi-daemon:/var/run/avahi-daemon

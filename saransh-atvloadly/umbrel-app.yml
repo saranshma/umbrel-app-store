@@ -1,0 +1,31 @@
+manifestVersion: 1
+id: saransh-atvloadly
+category: automation
+name: atvloadly
+version: "0.7.4"
+tagline: Sideload and auto-refresh apps on Apple TV
+port: 5533
+description: >-
+  atvloadly installs IPA files onto your Apple TV over the network and
+  automatically re-signs them before the 7-day free Apple ID certificate
+  expires, so sideloaded apps keep working without manual refreshes.
+
+
+  First-time setup: put the Apple TV in pairing mode (Settings > Remote and
+  Devices > Remote App and Devices), open the web UI at http://umbrel.local:5533,
+  pick the Apple TV, enter the PIN shown on screen, then sign in with an Apple ID
+  (a dedicated one is recommended) and install an IPA.
+releaseNotes: >-
+  0.7.4: automatic update to the latest upstream release.
+developer: bitxeno
+website: https://github.com/bitxeno/atvloadly
+repo: https://github.com/bitxeno/atvloadly
+support: https://github.com/bitxeno/atvloadly/issues
+submitter: Saransh Mathur
+submission: https://github.com/bitxeno/atvloadly
+icon: https://raw.githubusercontent.com/saranshma/umbrel-app-store/main/saransh-atvloadly/icon.svg
+gallery: []
+dependencies: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
