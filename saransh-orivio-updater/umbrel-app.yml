@@ -1,0 +1,27 @@
+manifestVersion: 1
+id: saransh-orivio-updater
+category: automation
+name: Orivio Updater
+version: "1.0.0"
+tagline: Auto-install new Orivio TV releases on Apple TV via atvloadly
+port: 5534
+description: >-
+  Background worker with no web UI. Every 6 hours it checks the Orivio TV GitHub
+  releases; when a new one appears it downloads the Sideload IPA, strips the Top Shelf
+  extension and the shared app-group entitlement (Apple refuses to register that group
+  on a different team), and asks atvloadly to install it on the Apple TV. Requires the
+  atvloadly app to be installed, paired and signed in. Logs show each check.
+releaseNotes: >-
+  1.0.0: initial release.
+developer: Saransh Mathur
+website: https://github.com/prehakanson-art/OrivioTVAppleTV
+repo: https://github.com/saranshma/umbrel-app-store
+support: https://github.com/saranshma/umbrel-app-store/issues
+submitter: Saransh Mathur
+submission: https://github.com/saranshma/umbrel-app-store
+icon: https://raw.githubusercontent.com/saranshma/umbrel-app-store/main/saransh-orivio-updater/icon.svg
+gallery: []
+dependencies: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""

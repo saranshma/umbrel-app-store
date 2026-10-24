@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  # No app_proxy and no web UI: this is a background worker. It needs host networking so it
+  # can reach atvloadly on 127.0.0.1:5533 and so atvloadly can fetch the repackaged IPA from
+  # 127.0.0.1:5534. The script is mounted from this app's own folder (copied by Umbrel).
+  server:
+    image: python:3.12-slim-bookworm@sha256:57d96f71de145a98e7ceca18ee4ade77bba4103a33a72dfaea026b23625c6bf0
+    init: true
+    restart: unless-stopped
+    network_mode: host
+    command: python -u /app/updater.py
+    environment:
+      CHECK_INTERVAL: "21600"
+    volumes:
+      - ${APP_DATA_DIR}/updater.py:/app/updater.py:ro
+      - ${APP_DATA_DIR}/data:/data
