@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Keep Orivio TV on the Apple TV at the latest GitHub release.
+"""Keep an app (Nuvio TV by default) on the Apple TV at the latest GitHub release.
 
 Every CHECK_INTERVAL seconds: look up the newest release, and if its tag differs from the
 last one installed, download the "Sideload" IPA, strip the Top Shelf extension and the
@@ -10,8 +10,9 @@ import json, os, shutil, struct, sys, threading, time, urllib.request, zipfile
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
-REPO = os.environ.get("RELEASE_REPO", "prehakanson-art/OrivioTVAppleTV")
-ASSET_SUFFIX = os.environ.get("ASSET_SUFFIX", "Sideload.ipa")  # not Sideloadly.ipa
+REPO = os.environ.get("RELEASE_REPO", "bobsupra/NuvioTVOS")
+TAG_PREFIX = os.environ.get("TAG_PREFIX", "tvos-")  # the repo also publishes non-tvOS releases
+ASSET_SUFFIX = os.environ.get("ASSET_SUFFIX", "unsigned-release.ipa")
 ATV = os.environ.get("ATVLOADLY_URL", "http://127.0.0.1:5533")
 PORT = int(os.environ.get("SERVE_PORT", "5534"))
 INTERVAL = int(os.environ.get("CHECK_INTERVAL", "21600"))
@@ -25,17 +26,17 @@ def log(*a):
 
 
 def http_json(url):
-    req = urllib.request.Request(url, headers={"User-Agent": "orivio-updater", "Accept": "application/vnd.github+json"})
+    req = urllib.request.Request(url, headers={"User-Agent": "apptv-updater", "Accept": "application/vnd.github+json"})
     with urllib.request.urlopen(req, timeout=60) as r:
         return json.load(r)
 
 
 def latest_release():
-    for rel in http_json(f"https://api.github.com/repos/{REPO}/releases?per_page=10"):
-        if rel.get("draft") or rel.get("prerelease"):
+    for rel in http_json(f"https://api.github.com/repos/{REPO}/releases?per_page=30"):
+        if rel.get("draft") or rel.get("prerelease") or not rel["tag_name"].startswith(TAG_PREFIX):
             continue
         for a in rel["assets"]:
-            if a["name"].endswith(ASSET_SUFFIX) and not a["name"].endswith("Sideloadly.ipa"):
+            if a["name"].endswith(ASSET_SUFFIX):
                 return rel["tag_name"], a["browser_download_url"]
     raise RuntimeError("no suitable release asset found")
 
@@ -116,7 +117,7 @@ class MCP:
 
     def start(self):
         self._post({"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {
-            "protocolVersion": "2025-03-26", "capabilities": {}, "clientInfo": {"name": "orivio-updater", "version": "1"}}})
+            "protocolVersion": "2025-03-26", "capabilities": {}, "clientInfo": {"name": "apptv-updater", "version": "1"}}})
         self._post({"jsonrpc": "2.0", "method": "notifications/initialized"})
 
     def call(self, name, args=None):
@@ -154,7 +155,7 @@ def check_once():
         log(f"{tag} already installed")
         return
     log(f"new release {tag}, repackaging {url}")
-    name = f"Orivio-{tag}.ipa"
+    name = f"app-{tag}.ipa"
     repackage(url, f"{WWW}/{name}")
     if install(name):
         json.dump({"installed_tag": tag, "at": time.time()}, open(STATE, "w"))
