@@ -2,7 +2,7 @@ manifestVersion: 1
 id: saransh-orivio-updater
 category: automation
 name: Apple TV App Updater
-version: "1.1.0"
+version: "1.1.1"
 tagline: Auto-install new GitHub releases of an Apple TV app via atvloadly
 port: 5534
 description: >-
@@ -14,6 +14,7 @@ description: >-
   install it on the Apple TV. Requires the atvloadly app to be installed, paired and
   signed in. Logs show each check.
 releaseNotes: >-
+  1.1.1: script is embedded in the compose file so app updates actually deploy it; fixes install-status polling.
   1.1.0: now tracks Nuvio TV (bobsupra/NuvioTVOS) instead of Orivio TV.
 
   1.0.0: initial release.
