@@ -133,17 +133,24 @@ class MCP:
         return text
 
 
+def app_snapshot(m):
+    items = json.loads(m.call("get_app_list")).get("items", [])
+    return {(i["id"], i.get("expiration_date"), i.get("version")) for i in items}
+
+
 def install(ipa_name):
     m = MCP()
     m.start()
+    before = app_snapshot(m)
     log("install_app:", m.call("install_app", {"ipa_url": f"http://127.0.0.1:{PORT}/{ipa_name}"})[:500])
     time.sleep(5)
     deadline = time.time() + 1800
     while time.time() < deadline:
-        st = m.call("get_install_status")
-        if "in_progress" not in st:
-            log("install status:", st[:500])
-            return "completed" in st and "fail" not in st.lower() and "error" not in st.lower()
+        st = json.loads(m.call("get_install_status"))
+        if not st.get("install_in_progress"):
+            log("install status:", st)
+            # atvloadly reports "completed" for failures too; a new/changed app record means it worked
+            return app_snapshot(m) != before
         time.sleep(10)
     raise RuntimeError("install timed out")
 
