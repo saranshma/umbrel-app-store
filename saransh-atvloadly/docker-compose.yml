@@ -6,7 +6,7 @@ services:
   # avahi-daemon + dbus sockets (both present and running on umbrelOS).
   # Web UI is served directly on port 5533.
   server:
-    image: bitxeno/atvloadly:v0.8.2@sha256:8e14413e489b4b2d9affa860582222a85731c912a4f20d455f617da7d4eca8fa
+    image: bitxeno/atvloadly:v0.8.3@sha256:3666109bb5a84137ff47abc6a6e74a10518741fa93fbfcc0d37b54c17f39787c
     init: true
     restart: unless-stopped
     network_mode: host
